@@ -10,15 +10,16 @@ NC='\033[0m'
 SCRIPT_NAME="quick-drupal"
 REPO_URL="https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install-drupal.sh"
 
-# Try to use /usr/bin if we have sudo access, otherwise fallback to ~/.local/bin
-if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+# Check if we're running with sudo
+if [ "$(id -u)" = "0" ]; then
     INSTALL_DIR="/usr/bin"
-    USE_SUDO=true
+    USE_SUDO=false  # We're already root
     echo -e "${GREEN}Installing globally in $INSTALL_DIR${NC}"
 else
     INSTALL_DIR="$HOME/.local/bin"
     USE_SUDO=false
     echo -e "${YELLOW}Installing locally in $INSTALL_DIR${NC}"
+    echo -e "${YELLOW}Note: Run with sudo to install globally in /usr/bin${NC}"
 fi
 
 # Backup existing installation if updating

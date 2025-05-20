@@ -4,16 +4,26 @@ A command line tool to quickly install Drupal CMS using DDEV.
 
 ## Installation
 
-The script will try to install globally in `/usr/bin` if you have sudo access. If not, it will fall back to a local installation in `~/.local/bin`.
+### Global Installation (Recommended)
+
+To install globally in `/usr/bin` (requires sudo):
 
 ```bash
-curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
 ```
 
 Or using wget:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
+```
+
+### Local Installation
+
+If you prefer to install in your home directory (`~/.local/bin`):
+
+```bash
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
 > **Important**: After installation, you need to either:
