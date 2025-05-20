@@ -1,87 +1,49 @@
 # Quick Drupal Installer
 
-A command line tool to quickly install Drupal CMS using DDEV.
+Una herramienta de línea de comandos para instalar Drupal CMS rápidamente usando DDEV.
 
-## Installation
-
-### Global Installation (Recommended)
-
-To install globally in `/usr/bin` (requires sudo):
-
-```bash
-curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
-```
-
-Or using wget:
-
-```bash
-wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
-```
-
-### Local Installation
-
-If you prefer to install in your home directory (`~/.local/bin`):
+## Instalación
 
 ```bash
 curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-> **Important**: After installation, you need to either:
-> 1. Close and reopen your terminal, or
-> 2. Run: `source ~/.bashrc`
-> 
-> This is required for the `quick-drupal` command to be available.
-
-## Usage
-
-```bash
-# Basic installation
-quick-drupal my-project
-
-# Basic installation (only creates the project)
-quick-drupal my-project
-
-# Full installation with default values
-quick-drupal -f my-project
-
-# Custom full installation
-quick-drupal -f my-project -u adminuser -p mypass -e admin@mydomain.com -n "My Website"
-
-# Show help
-quick-drupal --help
-```
-
-## Options
-
-- `-h, --help`: Show help
-- `-f, --full`: Perform a full automatic installation
-- `-u, --user <username>`: Set admin username (default: admin)
-- `-p, --pass <password>`: Set admin password (default: admin)
-- `-e, --email <email>`: Set admin email (default: admin@example.com)
-- `-n, --name <name>`: Set site name (default: My Drupal CMS)
-
-## Updating
-
-To update to the latest version, run the installation command again:
-
-```bash
-curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
-```
-
-Or using wget:
+O usando wget:
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-The script will automatically update the existing installation.
+## Uso
 
-## Requirements
+```bash
+# Instalación básica
+quick-drupal mi-proyecto
 
-- DDEV installed
-- Docker installed
-- Curl or wget (for installation)
+# Instalación completa con parámetros personalizados
+quick-drupal -f mi-proyecto --user adminuser --pass miclave --email admin@midominio.com
 
-## License
+# Ver la ayuda
+quick-drupal --help
+```
+
+## Opciones
+
+- `-h, --help`: Muestra la ayuda
+- `-f, --full`: Realiza una instalación completa automática
+- `-u, --user <usuario>`: Define el usuario administrador
+- `-p, --pass <contraseña>`: Define la contraseña del administrador
+- `-e, --email <email>`: Define el email del administrador
+- `-n, --name <nombre>`: Define el nombre del sitio
+- `--php <version>`: Define la versión de PHP
+- `--drupal <version>`: Define la versión de Drupal
+
+## Requisitos
+
+- DDEV instalado
+- Docker instalado
+- Curl o wget (para la instalación)
+
+## Licencia
 
 MIT

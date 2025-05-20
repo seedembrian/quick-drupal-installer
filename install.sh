@@ -1,93 +1,52 @@
 #!/bin/bash
 
-# Colors
+# Colores
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# Script name and repo URL
+# Verificar si tenemos sudo
+if ! command -v sudo >/dev/null 2>&1; then
+    echo -e "${RED}Error: Este script requiere sudo para instalar en /usr/bin${NC}"
+    exit 1
+fi
+
+# Verificar permisos de sudo antes de continuar
+echo -e "${YELLOW}Se requieren permisos de administrador para instalar en /usr/bin${NC}"
+echo -n "Por favor, ingrese su contraseña: "
+if ! sudo -v; then
+    echo -e "\n${RED}Error: No se pudieron obtener permisos de administrador${NC}"
+    exit 1
+fi
+
+# Variables de instalación
+INSTALL_DIR="/usr/bin"
 SCRIPT_NAME="quick-drupal"
 REPO_URL="https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install-drupal.sh"
 
-# Check if we're running with sudo
-if [ "$(id -u)" = "0" ]; then
-    INSTALL_DIR="/usr/bin"
-    USE_SUDO=false  # We're already root
-    echo -e "${GREEN}Installing globally in $INSTALL_DIR${NC}"
-else
-    INSTALL_DIR="$HOME/.local/bin"
-    USE_SUDO=false
-    echo -e "${YELLOW}Installing locally in $INSTALL_DIR${NC}"
-    echo -e "${YELLOW}Note: Run with sudo to install globally in /usr/bin${NC}"
-fi
+echo -e "\n${GREEN}Instalando Quick Drupal Installer...${NC}"
 
-# Backup existing installation if updating
-if [ -f "$INSTALL_DIR/$SCRIPT_NAME" ]; then
-    echo -e "${GREEN}Updating Quick Drupal Installer...${NC}"
-    if [ "$USE_SUDO" = true ]; then
-        sudo cp "$INSTALL_DIR/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME.backup"
-    else
-        cp "$INSTALL_DIR/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME.backup"
-    fi
-    UPDATE=true
-else
-    echo -e "${GREEN}Installing Quick Drupal Installer...${NC}"
-    UPDATE=false
-fi
+# Descargar el script a un archivo temporal
+echo "Descargando script..."
+TMP_FILE=$(mktemp)
+curl -o "$TMP_FILE" "$REPO_URL" || {
+    rm -f "$TMP_FILE"
+    echo -e "${RED}Error al descargar el script${NC}"
+    exit 1
+}
 
-# Create local installation directory if needed
-if [ "$USE_SUDO" = false ]; then
-    mkdir -p "$INSTALL_DIR"
-fi
+# Mover el script a su ubicación final con sudo
+echo "Instalando en $INSTALL_DIR..."
+sudo mv "$TMP_FILE" "$INSTALL_DIR/$SCRIPT_NAME" || {
+    rm -f "$TMP_FILE"
+    echo -e "${RED}Error al instalar el script${NC}"
+    exit 1
+}
 
-# Download and install script
-echo "Downloading script..."
-if [ "$USE_SUDO" = true ]; then
-    TMP_FILE=$(mktemp)
-    if curl -o "$TMP_FILE" "$REPO_URL"; then
-        sudo mv "$TMP_FILE" "$INSTALL_DIR/$SCRIPT_NAME"
-    else
-        rm -f "$TMP_FILE"
-        [ "$UPDATE" = true ] && sudo mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
-        echo -e "${RED}Error downloading the script${NC}"
-        exit 1
-    fi
-else
-    # Local installation
-    if curl -o "$INSTALL_DIR/$SCRIPT_NAME" "$REPO_URL"; then
-        true
-    else
-        [ "$UPDATE" = true ] && mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
-        echo -e "${RED}Error downloading the script${NC}"
-        exit 1
-    fi
-fi
+# Hacer el script ejecutable
+sudo chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
 
-# Make the script executable
-if [ "$USE_SUDO" = true ]; then
-    sudo chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
-else
-    chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
-fi
-
-# Clean up backup if update was successful
-if [ "$UPDATE" = true ]; then
-    if [ "$USE_SUDO" = true ]; then
-        sudo rm -f "$INSTALL_DIR/$SCRIPT_NAME.backup"
-    else
-        rm -f "$INSTALL_DIR/$SCRIPT_NAME.backup"
-    fi
-    echo -e "${GREEN}Update completed successfully!${NC}"
-fi
-
-# Add to PATH for local installation
-if [ "$USE_SUDO" = false ] && [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
-    echo "Adding $INSTALL_DIR to PATH..."
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    export PATH="$HOME/.local/bin:$PATH"
-fi
-
-echo -e "${GREEN}Installation completed!${NC}"
-echo "You can now use the 'quick-drupal' command from any location."
-echo "Example: quick-drupal --help"
+echo -e "${GREEN}¡Instalación completada!${NC}"
+echo "Puedes usar el comando 'quick-drupal' desde cualquier ubicación."
+echo "Ejemplo: quick-drupal --help"
