@@ -21,51 +21,46 @@ else
     echo -e "${YELLOW}Installing locally in $INSTALL_DIR${NC}"
 fi
 
-# Check if it's an update
+# Backup existing installation if updating
 if [ -f "$INSTALL_DIR/$SCRIPT_NAME" ]; then
     echo -e "${GREEN}Updating Quick Drupal Installer...${NC}"
-    # Create backup of existing script
-    cp "$INSTALL_DIR/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME.backup"
+    if [ "$USE_SUDO" = true ]; then
+        sudo cp "$INSTALL_DIR/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME.backup"
+    else
+        cp "$INSTALL_DIR/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME.backup"
+    fi
     UPDATE=true
 else
     echo -e "${GREEN}Installing Quick Drupal Installer...${NC}"
     UPDATE=false
 fi
 
-# Create installation directory if it doesn't exist and we're using local install
+# Create local installation directory if needed
 if [ "$USE_SUDO" = false ]; then
     mkdir -p "$INSTALL_DIR"
 fi
 
-# Download the script (using sudo if necessary)
+# Download and install script
 echo "Downloading script..."
 if [ "$USE_SUDO" = true ]; then
-    # Global installation with sudo
-    curl -o "/tmp/$SCRIPT_NAME" "$REPO_URL" && \
-    sudo mv "/tmp/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME" || {
-        if [ "$UPDATE" = true ]; then
-            echo -e "${RED}Error downloading update. Restoring backup...${NC}"
-            mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
-        fi
+    TMP_FILE=$(mktemp)
+    if curl -o "$TMP_FILE" "$REPO_URL"; then
+        sudo mv "$TMP_FILE" "$INSTALL_DIR/$SCRIPT_NAME"
+    else
+        rm -f "$TMP_FILE"
+        [ "$UPDATE" = true ] && sudo mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
         echo -e "${RED}Error downloading the script${NC}"
         exit 1
-    }
+    fi
 else
-    # Local installation without sudo
-    curl -o "$INSTALL_DIR/$SCRIPT_NAME" "$REPO_URL" || {
-        if [ "$UPDATE" = true ]; then
-            echo -e "${RED}Error downloading update. Restoring backup...${NC}"
-            mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
-        fi
+    # Local installation
+    if curl -o "$INSTALL_DIR/$SCRIPT_NAME" "$REPO_URL"; then
+        true
+    else
+        [ "$UPDATE" = true ] && mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
         echo -e "${RED}Error downloading the script${NC}"
         exit 1
-    }
-fi
-
-# Remove backup if update was successful
-if [ "$UPDATE" = true ]; then
-    rm "$INSTALL_DIR/$SCRIPT_NAME.backup"
-    echo -e "${GREEN}Update completed successfully!${NC}"
+    fi
 fi
 
 # Make the script executable
@@ -75,7 +70,17 @@ else
     chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
 fi
 
-# Only add to PATH if using local installation
+# Clean up backup if update was successful
+if [ "$UPDATE" = true ]; then
+    if [ "$USE_SUDO" = true ]; then
+        sudo rm -f "$INSTALL_DIR/$SCRIPT_NAME.backup"
+    else
+        rm -f "$INSTALL_DIR/$SCRIPT_NAME.backup"
+    fi
+    echo -e "${GREEN}Update completed successfully!${NC}"
+fi
+
+# Add to PATH for local installation
 if [ "$USE_SUDO" = false ] && [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
     echo "Adding $INSTALL_DIR to PATH..."
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
