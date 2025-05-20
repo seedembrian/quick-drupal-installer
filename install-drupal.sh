@@ -41,11 +41,15 @@ mkdir "$PROJECT_NAME"
 cd "$PROJECT_NAME" || exit 1
 
 # Configurar y arrancar DDEV
-ddev config --project-type=drupal11 --docroot=web --project-name="$PROJECT_NAME"
-ddev start
+echo "⚙️ Configurando DDEV..."
+ddev config --project-type=drupal11 --docroot=web --project-name="$PROJECT_NAME" || exit 1
+
+echo "🚀 Iniciando DDEV..."
+ddev start || exit 1
 
 # Descargar Drupal CMS
-ddev composer create-project drupal/cms .
+echo "📦 Descargando Drupal CMS..."
+ddev composer create drupal/cms || exit 1
 
 if [ "$FULL_INSTALL" = true ]; then
   echo "⚙️ Instalando Drupal con parámetros por defecto..."
