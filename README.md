@@ -5,13 +5,13 @@ Una herramienta de línea de comandos para instalar Drupal CMS rápidamente usan
 ## Instalación
 
 ```bash
-curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/main/install.sh | bash
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
 O usando wget:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
 ## Uso

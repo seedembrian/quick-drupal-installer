@@ -8,7 +8,7 @@ NC='\033[0m'
 # Directorio de instalación
 INSTALL_DIR="$HOME/.local/bin"
 SCRIPT_NAME="quick-drupal"
-REPO_URL="https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/main/install-drupal.sh"
+REPO_URL="https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install-drupal.sh"
 
 echo -e "${GREEN}Instalando Quick Drupal Installer...${NC}"
 
