@@ -48,6 +48,22 @@ quick-drupal --help
 - `-e, --email <email>`: Set admin email (default: admin@example.com)
 - `-n, --name <name>`: Set site name (default: My Drupal CMS)
 
+## Updating
+
+To update to the latest version, run the installation command again:
+
+```bash
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+```
+
+Or using wget:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+```
+
+The script will automatically update the existing installation.
+
 ## Requirements
 
 - DDEV installed
