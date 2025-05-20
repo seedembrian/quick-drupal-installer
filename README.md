@@ -4,22 +4,16 @@ Una herramienta de línea de comandos para instalar Drupal CMS rápidamente usan
 
 ## Instalación
 
-1. Primero, descarga el script de instalación:
+Usando curl:
 
 ```bash
-curl -o /tmp/install-drupal.sh https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
 O usando wget:
 
 ```bash
-wget -O /tmp/install-drupal.sh https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh
-```
-
-2. Luego, ejecuta el script con sudo:
-
-```bash
-sudo bash /tmp/install-drupal.sh && rm /tmp/install-drupal.sh
+wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
 ## Uso
