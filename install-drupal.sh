@@ -94,7 +94,7 @@ echo "📦 Descargando Drupal CMS..."
 ddev composer create drupal/cms || exit 1
 
 if [ "$FULL_INSTALL" = true ]; then
-  echo "⚙️ Instalando Drupal con parámetros por defecto..."
+  echo "⚙️ Instalando Drupal CMS, por favor espere..."
   ddev drush site:install "$PROFILE" \
     --account-name="$ADMIN_USER" \
     --account-pass="$ADMIN_PASS" \
