@@ -1,51 +1,51 @@
 # Quick Drupal Installer
 
-Una herramienta de línea de comandos para instalar Drupal CMS rápidamente usando DDEV.
+A command-line tool to quickly install Drupal CMS using DDEV.
 
-## Instalación
+## Installation
 
-Usando curl:
+Using curl:
 
 ```bash
 curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-O usando wget:
+Or using wget:
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-## Uso
+## Usage
 
 ```bash
-# Instalación básica
-quick-drupal mi-proyecto
+# Basic installation
+quick-drupal my-project
 
-# Instalación completa con parámetros personalizados
-quick-drupal -f mi-proyecto --user adminuser --pass miclave --email admin@midominio.com
+# Full installation with custom parameters
+quick-drupal -f my-project --user adminuser --pass mypass --email admin@mydomain.com
 
-# Ver la ayuda
+# Show help
 quick-drupal --help
 ```
 
-## Opciones
+## Options
 
-- `-h, --help`: Muestra la ayuda
-- `-f, --full`: Realiza una instalación completa automática
-- `-u, --user <usuario>`: Define el usuario administrador
-- `-p, --pass <contraseña>`: Define la contraseña del administrador
-- `-e, --email <email>`: Define el email del administrador
-- `-n, --name <nombre>`: Define el nombre del sitio
-- `--php <version>`: Define la versión de PHP
-- `--drupal <version>`: Define la versión de Drupal
+- `-h, --help`: Show help
+- `-f, --full`: Perform a full automatic installation
+- `-u, --user <username>`: Set admin username
+- `-p, --pass <password>`: Set admin password
+- `-e, --email <email>`: Set admin email
+- `-n, --name <name>`: Set site name
+- `--php <version>`: Set PHP version
+- `--drupal <version>`: Set Drupal version
 
-## Requisitos
+## Requirements
 
-- DDEV instalado
-- Docker instalado
-- Curl o wget (para la instalación)
+- DDEV installed
+- Docker installed
+- Curl or wget (for installation)
 
-## Licencia
+## License
 
 MIT
