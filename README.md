@@ -1,53 +1,59 @@
 # Quick Drupal Installer
 
-Una herramienta de línea de comandos para instalar Drupal CMS rápidamente usando DDEV.
+A command line tool to quickly install Drupal CMS using DDEV.
 
-## Instalación
+## Installation
 
 ```bash
 curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-O usando wget:
+Or using wget:
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-## Uso
+> **Important**: After installation, you need to either:
+> 1. Close and reopen your terminal, or
+> 2. Run: `source ~/.bashrc`
+> 
+> This is required for the `quick-drupal` command to be available.
+
+## Usage
 
 ```bash
-# Instalación básica
-quick-drupal mi-proyecto
+# Basic installation
+quick-drupal my-project
 
-# Instalación básica (solo crea el proyecto)
-quick-drupal mi-proyecto
+# Basic installation (only creates the project)
+quick-drupal my-project
 
-# Instalación completa con valores por defecto
-quick-drupal -f mi-proyecto
+# Full installation with default values
+quick-drupal -f my-project
 
-# Instalación completa personalizada
-quick-drupal -f mi-proyecto -u adminuser -p miclave -e admin@midominio.com -n "Mi Sitio Web"
+# Custom full installation
+quick-drupal -f my-project -u adminuser -p mypass -e admin@mydomain.com -n "My Website"
 
-# Ver la ayuda
+# Show help
 quick-drupal --help
 ```
 
-## Opciones
+## Options
 
-- `-h, --help`: Muestra la ayuda
-- `-f, --full`: Realiza una instalación completa automática
-- `-u, --user <usuario>`: Define el usuario administrador (default: admin)
-- `-p, --pass <contraseña>`: Define la contraseña del administrador (default: admin)
-- `-e, --email <email>`: Define el email del administrador (default: admin@example.com)
-- `-n, --name <nombre>`: Define el nombre del sitio (default: Mi sitio Drupal CMS)
+- `-h, --help`: Show help
+- `-f, --full`: Perform a full automatic installation
+- `-u, --user <username>`: Set admin username (default: admin)
+- `-p, --pass <password>`: Set admin password (default: admin)
+- `-e, --email <email>`: Set admin email (default: admin@example.com)
+- `-n, --name <name>`: Set site name (default: My Drupal CMS)
 
-## Requisitos
+## Requirements
 
-- DDEV instalado
-- Docker instalado
-- Curl o wget (para la instalación)
+- DDEV installed
+- Docker installed
+- Curl or wget (for installation)
 
-## Licencia
+## License
 
 MIT

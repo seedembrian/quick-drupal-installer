@@ -1,28 +1,28 @@
 #!/bin/bash
 
-# Función de ayuda
+# Help function
 show_help() {
-  echo "Uso: $0 [opciones] nombre-proyecto"
+  echo "Usage: $0 [options] project-name"
   echo ""
-  echo "Opciones:"
-  echo "  -f, --full          Instalación completa automática"
-  echo "  -u, --user USER     Usuario administrador (default: admin)"
-  echo "  -p, --pass PASS     Contraseña del admin (default: admin)"
-  echo "  -e, --email EMAIL   Email del admin (default: admin@example.com)"
-  echo "  -n, --name NAME     Nombre del sitio (default: Mi sitio Drupal CMS)"
-  echo "  -h, --help          Muestra esta ayuda"
+  echo "Options:"
+  echo "  -f, --full          Full automatic installation"
+  echo "  -u, --user USER     Admin username (default: admin)"
+  echo "  -p, --pass PASS     Admin password (default: admin)"
+  echo "  -e, --email EMAIL   Admin email (default: admin@example.com)"
+  echo "  -n, --name NAME     Site name (default: My Drupal CMS)"
+  echo "  -h, --help          Show this help"
   exit 0
 }
 
-# Variables por defecto
+# Default variables
 PROJECT_NAME="drupalcms"
 FULL_INSTALL=false
 ADMIN_USER="admin"
 ADMIN_PASS="admin"
 ADMIN_EMAIL="admin@example.com"
-SITE_NAME="Mi sitio Drupal CMS"
+SITE_NAME="My Drupal CMS"
 
-# Leer argumentos
+# Read arguments
 while [[ $# -gt 0 ]]; do
   case $1 in
     --full|-f)
@@ -49,7 +49,7 @@ while [[ $# -gt 0 ]]; do
       show_help
       ;;
     -*)
-      echo "❌ Opción desconocida: $1"
+      echo "❌ Unknown option: $1"
       show_help
       ;;
     *)
@@ -59,42 +59,43 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Verificar que se proporcionó un nombre de proyecto
+# Verify that a project name was provided
 if [ -z "$PROJECT_NAME" ]; then
-  echo "❌ Debe especificar un nombre para el proyecto"
+  echo "❌ You must specify a project name"
   show_help
 fi
+
 PROFILE="drupal_cms_installer"
 
-# Verificar DDEV
+# Check DDEV
 if ! command -v ddev &> /dev/null; then
-  echo "❌ DDEV no está instalado. Instálalo desde https://ddev.readthedocs.io/"
+  echo "❌ DDEV is not installed. Install it from https://ddev.readthedocs.io/"
   exit 1
 fi
 
-# === Evitar sobrescribir si ya existe ===
+# === Avoid overwriting if exists ===
 if [ -d "$PROJECT_NAME" ]; then
-  echo "⚠️ La carpeta '$PROJECT_NAME' ya existe. Por favor elige otro nombre o elimínala primero."
+  echo "⚠️ The folder '$PROJECT_NAME' already exists. Please choose another name or delete it first."
   exit 1
 fi
 
-# Crear carpeta y navegar a ella
+# Create folder and navigate to it
 mkdir "$PROJECT_NAME"
 cd "$PROJECT_NAME" || exit 1
 
-# Configurar y arrancar DDEV
-echo "⚙️ Configurando DDEV..."
+# Configure and start DDEV
+echo "⚙️ Configuring DDEV..."
 ddev config --project-type=drupal11 --docroot=web --project-name="$PROJECT_NAME" || exit 1
 
-echo "🚀 Iniciando DDEV..."
+echo "🚀 Starting DDEV..."
 ddev start || exit 1
 
-# Descargar Drupal CMS
-echo "📦 Descargando Drupal CMS..."
+# Download Drupal CMS
+echo "📦 Downloading Drupal CMS..."
 ddev composer create drupal/cms || exit 1
 
 if [ "$FULL_INSTALL" = true ]; then
-  echo "⚙️ Instalando Drupal CMS, por favor espere..."
+  echo "⚙️ Installing Drupal CMS, please wait..."
   ddev drush site:install "$PROFILE" \
     --account-name="$ADMIN_USER" \
     --account-pass="$ADMIN_PASS" \
@@ -102,12 +103,12 @@ if [ "$FULL_INSTALL" = true ]; then
     --site-name="$SITE_NAME" \
     --yes
 
-  echo "✅ Drupal CMS instalado."
-  echo "🌐 URL del sitio: $(ddev describe -j | grep -oP '"https_url"\s*:\s*"\K[^"]+')"
-  echo "👤 Usuario: $ADMIN_USER"
-  echo "🔑 Contraseña: $ADMIN_PASS"
+  echo "✅ Drupal CMS installed."
+  echo "🌐 Site URL: $(ddev describe -j | grep -oP '"https_url"\s*:\s*"\K[^"]+')"
+  echo "👤 User: $ADMIN_USER"
+  echo "🔑 Password: $ADMIN_PASS"
 
-  # Abrir en navegador (WSL o Linux/macOS)
+  # Open in browser (WSL or Linux/macOS)
   if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then
     SITE_URL=$(ddev describe -j | grep -oP '"https_url"\s*:\s*"\K[^"]+')
     powershell.exe start "$SITE_URL"
