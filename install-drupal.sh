@@ -45,7 +45,7 @@ ddev config --project-type=drupal11 --docroot=web --project-name="$PROJECT_NAME"
 ddev start
 
 # Descargar Drupal CMS
-ddev composer create drupal/cms
+ddev composer create-project drupal/cms .
 
 if [ "$FULL_INSTALL" = true ]; then
   echo "⚙️ Instalando Drupal con parámetros por defecto..."
