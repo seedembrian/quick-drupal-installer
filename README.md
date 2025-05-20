@@ -7,13 +7,13 @@ A command-line tool to quickly install Drupal CMS using DDEV.
 Using curl:
 
 ```bash
-curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
 ```
 
 Or using wget:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
 ```
 
 ## Usage
