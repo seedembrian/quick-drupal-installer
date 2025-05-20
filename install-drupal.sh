@@ -72,7 +72,7 @@ check_requirements() {
     if [ "$free_space" -lt 2097152 ]; then # 2GB en KB
         log_message "error" "Espacio insuficiente en disco. Se requieren al menos 2GB libres."
         exit 1
-    }
+    fi
 }
 
 # Procesar argumentos
