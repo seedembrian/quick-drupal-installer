@@ -1,27 +1,69 @@
 #!/bin/bash
 
+# Función de ayuda
+show_help() {
+  echo "Uso: $0 [opciones] nombre-proyecto"
+  echo ""
+  echo "Opciones:"
+  echo "  -f, --full          Instalación completa automática"
+  echo "  -u, --user USER     Usuario administrador (default: admin)"
+  echo "  -p, --pass PASS     Contraseña del admin (default: admin)"
+  echo "  -e, --email EMAIL   Email del admin (default: admin@example.com)"
+  echo "  -n, --name NAME     Nombre del sitio (default: Mi sitio Drupal CMS)"
+  echo "  -h, --help          Muestra esta ayuda"
+  exit 0
+}
+
 # Variables por defecto
 PROJECT_NAME="drupalcms"
 FULL_INSTALL=false
-
-# Leer argumentos
-for arg in "$@"; do
-  case $arg in
-    --full|-f)
-      FULL_INSTALL=true
-      shift
-      ;;
-    *)
-      PROJECT_NAME="$arg"
-      ;;
-  esac
-done
-
-# Configuraciones de instalación automatizada
 ADMIN_USER="admin"
 ADMIN_PASS="admin"
 ADMIN_EMAIL="admin@example.com"
 SITE_NAME="Mi sitio Drupal CMS"
+
+# Leer argumentos
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --full|-f)
+      FULL_INSTALL=true
+      shift
+      ;;
+    --user|-u)
+      ADMIN_USER="$2"
+      shift 2
+      ;;
+    --pass|-p)
+      ADMIN_PASS="$2"
+      shift 2
+      ;;
+    --email|-e)
+      ADMIN_EMAIL="$2"
+      shift 2
+      ;;
+    --name|-n)
+      SITE_NAME="$2"
+      shift 2
+      ;;
+    --help|-h)
+      show_help
+      ;;
+    -*)
+      echo "❌ Opción desconocida: $1"
+      show_help
+      ;;
+    *)
+      PROJECT_NAME="$1"
+      shift
+      ;;
+  esac
+done
+
+# Verificar que se proporcionó un nombre de proyecto
+if [ -z "$PROJECT_NAME" ]; then
+  echo "❌ Debe especificar un nombre para el proyecto"
+  show_help
+fi
 PROFILE="drupal_cms_installer"
 
 # Verificar DDEV

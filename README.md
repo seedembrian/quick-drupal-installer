@@ -20,8 +20,14 @@ wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/m
 # Instalación básica
 quick-drupal mi-proyecto
 
-# Instalación completa con parámetros personalizados
-quick-drupal -f mi-proyecto --user adminuser --pass miclave --email admin@midominio.com
+# Instalación básica (solo crea el proyecto)
+quick-drupal mi-proyecto
+
+# Instalación completa con valores por defecto
+quick-drupal -f mi-proyecto
+
+# Instalación completa personalizada
+quick-drupal -f mi-proyecto -u adminuser -p miclave -e admin@midominio.com -n "Mi Sitio Web"
 
 # Ver la ayuda
 quick-drupal --help
@@ -31,12 +37,10 @@ quick-drupal --help
 
 - `-h, --help`: Muestra la ayuda
 - `-f, --full`: Realiza una instalación completa automática
-- `-u, --user <usuario>`: Define el usuario administrador
-- `-p, --pass <contraseña>`: Define la contraseña del administrador
-- `-e, --email <email>`: Define el email del administrador
-- `-n, --name <nombre>`: Define el nombre del sitio
-- `--php <version>`: Define la versión de PHP
-- `--drupal <version>`: Define la versión de Drupal
+- `-u, --user <usuario>`: Define el usuario administrador (default: admin)
+- `-p, --pass <contraseña>`: Define la contraseña del administrador (default: admin)
+- `-e, --email <email>`: Define el email del administrador (default: admin@example.com)
+- `-n, --name <nombre>`: Define el nombre del sitio (default: Mi sitio Drupal CMS)
 
 ## Requisitos
 
