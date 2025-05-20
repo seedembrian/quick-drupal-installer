@@ -40,14 +40,27 @@ fi
 # Download the script (using sudo if necessary)
 echo "Downloading script..."
 if [ "$USE_SUDO" = true ]; then
-    curl -o "/tmp/$SCRIPT_NAME" "$REPO_URL" && sudo mv "/tmp/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME" || {
-    if [ "$UPDATE" = true ]; then
-        echo -e "${RED}Error downloading update. Restoring backup...${NC}"
-        mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
-    fi
-    echo -e "${RED}Error downloading the script${NC}"
-    exit 1
-}
+    # Global installation with sudo
+    curl -o "/tmp/$SCRIPT_NAME" "$REPO_URL" && \
+    sudo mv "/tmp/$SCRIPT_NAME" "$INSTALL_DIR/$SCRIPT_NAME" || {
+        if [ "$UPDATE" = true ]; then
+            echo -e "${RED}Error downloading update. Restoring backup...${NC}"
+            mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
+        fi
+        echo -e "${RED}Error downloading the script${NC}"
+        exit 1
+    }
+else
+    # Local installation without sudo
+    curl -o "$INSTALL_DIR/$SCRIPT_NAME" "$REPO_URL" || {
+        if [ "$UPDATE" = true ]; then
+            echo -e "${RED}Error downloading update. Restoring backup...${NC}"
+            mv "$INSTALL_DIR/$SCRIPT_NAME.backup" "$INSTALL_DIR/$SCRIPT_NAME"
+        fi
+        echo -e "${RED}Error downloading the script${NC}"
+        exit 1
+    }
+fi
 
 # Remove backup if update was successful
 if [ "$UPDATE" = true ]; then
