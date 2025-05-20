@@ -16,6 +16,8 @@ Or using wget:
 wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
 ```
 
+> **Note**: The installer will create a `quick-drupal` script in `/usr/bin`, making the command available system-wide. This requires sudo permissions.
+
 ## Usage
 
 ```bash

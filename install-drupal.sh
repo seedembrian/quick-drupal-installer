@@ -116,8 +116,17 @@ if [ "$FULL_INSTALL" = true ]; then
     ddev launch
   fi
 else
-  echo "📦 Proyecto Drupal creado."
-  echo "ℹ️ Puedes acceder al instalador en el navegador con:"
-  echo "    ddev launch"
+  echo "📦 Drupal project created."
+  echo "🌐 Opening Drupal installer in your browser..."
+  
+  # Open in browser (WSL or Linux/macOS)
+  if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then
+    SITE_URL=$(ddev describe -j | grep -oP '"https_url"\s*:\s*"\K[^"]+')    
+    powershell.exe start "$SITE_URL"
+  else
+    ddev launch
+  fi
 fi
+
+echo "✨ Project status:"
 ddev status
