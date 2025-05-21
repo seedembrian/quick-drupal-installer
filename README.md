@@ -4,19 +4,39 @@ A command-line tool to quickly install Drupal CMS using DDEV.
 
 ## Installation
 
-Using curl:
+Choose one of these methods:
+
+1. Using curl:
 
 ```bash
-curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
+curl -o- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
 ```
 
-Or using wget:
+2. Using wget:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | sudo bash
+wget -qO- https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh | bash
+```
+
+3. Or download and run manually:
+
+```bash
+# Download the installer
+curl -o install-drupal.sh https://raw.githubusercontent.com/seedembrian/quick-drupal-installer/master/install.sh
+
+# Make it executable
+chmod +x install-drupal.sh
+
+# Run the installer
+./install-drupal.sh
 ```
 
 > **Note**: The installer will create a `quick-drupal` script in `/usr/bin`, making the command available system-wide. You will be prompted for your password as administrator permissions are required.
+
+> **Important**: The installer needs:
+> - `sudo` access to write to `/usr/bin`
+> - `curl` or `wget` for downloading
+> - Internet connection to fetch the installation script
 
 ## Usage
 
